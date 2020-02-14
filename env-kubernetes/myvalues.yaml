@@ -13,14 +13,15 @@ cleanup:
     helm.sh/hook-delete-policy: hook-succeeded
 
 docker-registry:
+  enabled: false
   service:
     annotations:
       fabric8.io/expose: "true"
   persistence:
-    storageClass: "alicloud-disk-available"
+    storageClass: "managed-nfs-storage"
     accessMode: 'ReadWriteOnce'
     enabled: true
-    size: 100Gi
+    size: 10Gi
 
 kubernetes-dashboard:
   serviceAnnotations:
@@ -28,12 +29,13 @@ kubernetes-dashboard:
     fabric8.io/ingress.annotations: "nginx.ingress.kubernetes.io/auth-type: basic\nnginx.ingress.kubernetes.io/auth-secret: jx-basic-auth"
 
 nexus:
+  enabled: false
   service:
     annotations:
       fabric8.io/expose: "true"
       fabric8.io/ingress.annotations: "kubernetes.io/ingress.class: nginx"
   persistence:
-    storageClass: "alicloud-disk-available"
+    storageClass: "managed-nfs-storage"
     enabled: true
     accessMode: ReadWriteOnce
     size: 20Gi
@@ -43,7 +45,7 @@ chartmuseum:
     annotations:
       fabric8.io/expose: "true"
   persistence:
-    StorageClass: "alicloud-disk-available"
+    StorageClass: "managed-nfs-storage"
     Enabled: true
     AccessMode: ReadWriteOnce
     Size: 20Gi
@@ -107,7 +109,7 @@ jenkins:
     # Image: "jenkinsci/jenkins"
     # ImageTag: "2.89"
     Image: "jenkinsxio/jenkinsx"
-    ImageTag: "0.0.15"
+    # ImageTag: "0.0.15"
     ImagePullPolicy: "IfNotPresent"
     Component: "jenkins-master"
     UseSecurity: true
@@ -498,7 +500,7 @@ jenkins:
     ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
     ##   GKE, AWS & OpenStack)
     ##
-    StorageClass: "alicloud-disk-available"
+    StorageClass: "managed-nfs-storage"
   
     AccessMode: ReadWriteOnce
     Size: 30Gi
